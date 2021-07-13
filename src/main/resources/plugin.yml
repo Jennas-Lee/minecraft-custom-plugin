@@ -1,0 +1,4 @@
+name: CustomPlugin
+version: ${project.version}
+main: com.jennas.minecraft.customplugin.CustomPlugin
+api-version: 1.17
