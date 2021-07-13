@@ -35,7 +35,20 @@ public final class CustomPlugin extends JavaPlugin {
         if (!configFile.exists()) {
             try {
                 FileWriter fw = new FileWriter(configFile, false);
-                String configFileTxt = "full_heart_emoji_id: \nhalf_heart_emoji_id: \nempty_heart_emoji_id: \n";
+                String configFileTxt = "full_heart_emoji_id: \n" +
+                        "half_heart_emoji_id: \n" +
+                        "empty_heart_emoji_id: \n" +
+                        "mc_0_emoji_id: \n" +
+                        "mc_1_emoji_id: \n" +
+                        "mc_2_emoji_id: \n" +
+                        "mc_3_emoji_id: \n" +
+                        "mc_4_emoji_id: \n" +
+                        "mc_5_emoji_id: \n" +
+                        "mc_6_emoji_id: \n" +
+                        "mc_7_emoji_id: \n" +
+                        "mc_8_emoji_id: \n" +
+                        "mc_9_emoji_id: \n";
+
                 fw.write(configFileTxt);
                 fw.flush();
                 fw.close();
@@ -59,7 +72,7 @@ public final class CustomPlugin extends JavaPlugin {
     public void onDisable() {
         Bukkit.getServer().getConsoleSender().sendMessage(customPluginMessage(ChatColor.RED, ActiveWhether.DEACTIVE_STATE));
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(customPluginMessage(ChatColor.RED, ActiveWhether.ACTIVE_STATE));
+            player.sendMessage(customPluginMessage(ChatColor.RED, ActiveWhether.DEACTIVE_STATE));
         }
     }
 
@@ -86,7 +99,7 @@ class Bot extends ListenerAdapter {
 
     public void bulidBot() {
         try {
-            JDA jda = JDABuilder.createDefault("ODYyMzEyNTkwMjY3NjQ1OTkz.YOWhLg.7r_5rADXNbBu3E2jFkECOzMKkKc")
+            JDA jda = JDABuilder.createDefault("ODYyMzEyNTkwMjY3NjQ1OTkz.YOWhLg.8rNb-ymztiir5lZ4qr6PitxEP3E")
                     .addEventListeners(new Bot())
                     .build();
             jda.awaitReady();
@@ -104,19 +117,36 @@ class Bot extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         String query = event.getMessage().getContentRaw();
         EmbedBuilder eb = new EmbedBuilder();
+        GetPlayerStatusEmoji emoji = new GetPlayerStatusEmoji();
 
         switch (query) {
             case "&list":
-                GetEmoji getEmoji = new GetEmoji();
-                String test = getEmoji.getFullHeartEmoji();
+                try {
 
+                    boolean playerCountTemp = false;
 
-//                String userListStr = getOnlineUserListStr();
+                    eb.setTitle("현재 접속중인 플레이어는 다음과 같습니다.", null);
 
-                eb.setTitle("현재 접속중인 플레이어는 다음과 같습니다.", null);
-//                eb.setDescription(userListStr);
-//                String test = "<:full:864396944632709120><:half:864396655499673600><:empty:864396165607849995>";
-                eb.setDescription(test);
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        eb.addField("Name", player.getName(), false);
+                        eb.addField("Level", emoji.getLevel(player.getLevel()), true);
+                        eb.addField("Health", emoji.getHealth(player.getHealth()), true);
+                        eb.addField("Food", emoji.getHealth(player.getHealth()), true);
+                        playerCountTemp = true;
+                    }
+
+                    if (!playerCountTemp) {
+                        eb.setDescription("이런... 아무도 존재하지 않습니다.");
+                    }
+
+                } catch (NullPointerException e) {
+                    eb.setTitle("플러그인 설정이 완료되지 않았습니다.");
+                    eb.setDescription(
+                            "plugins/CustomPlugin 폴더에 있는 config.yml 파일을 설정해야합니다.\n" +
+                                    "서버에 추가한 이모지의 ID를 입력 후, `/reload confirm` 명령어를 사용해\n" +
+                                    "플러그인을 재시작하세요."
+                    );
+                }
 
                 event.getChannel().sendMessage(eb.build()).queue();
                 break;
@@ -131,20 +161,6 @@ class Bot extends ListenerAdapter {
                         .queue();
                 break;
         }
-    }
-
-    public String getOnlineUserListStr() {
-        StringBuilder builder = new StringBuilder(); // 메모리 관리 효율성
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            builder.append(player.getName() + "\n\n");
-        }
-
-        if (builder.toString().isEmpty()) {
-            builder.append("이런... 아무도 존재하지 않습니다.");
-        }
-
-        return builder.toString();
     }
 
     public String getHelpMessageListStr() {
