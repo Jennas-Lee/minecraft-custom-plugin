@@ -47,7 +47,10 @@ public final class CustomPlugin extends JavaPlugin {
                         "mc_6_emoji_id: \n" +
                         "mc_7_emoji_id: \n" +
                         "mc_8_emoji_id: \n" +
-                        "mc_9_emoji_id: \n";
+                        "mc_9_emoji_id: \n" +
+                        "full_hunger_emoji_id: \n" +
+                        "half_hunger_emoji_id: \n" +
+                        "empty_hunger_emoji_id: \n";
 
                 fw.write(configFileTxt);
                 fw.flush();
@@ -99,7 +102,7 @@ class Bot extends ListenerAdapter {
 
     public void bulidBot() {
         try {
-            JDA jda = JDABuilder.createDefault("ODYyMzEyNTkwMjY3NjQ1OTkz.YOWhLg.8rNb-ymztiir5lZ4qr6PitxEP3E")
+            JDA jda = JDABuilder.createDefault("ODYyMzEyNTkwMjY3NjQ1OTkz.YOWhLg.eLphheGN4Ljh1hbw7hSlRPVgJNI")
                     .addEventListeners(new Bot())
                     .build();
             jda.awaitReady();
@@ -131,7 +134,7 @@ class Bot extends ListenerAdapter {
                         eb.addField("Name", player.getName(), false);
                         eb.addField("Level", emoji.getLevel(player.getLevel()), true);
                         eb.addField("Health", emoji.getHealth(player.getHealth()), true);
-                        eb.addField("Food", emoji.getHealth(player.getHealth()), true);
+                        eb.addField("Food", emoji.getFood(player.getFoodLevel()), true);
                         playerCountTemp = true;
                     }
 
@@ -150,6 +153,28 @@ class Bot extends ListenerAdapter {
 
                 event.getChannel().sendMessage(eb.build()).queue();
                 break;
+
+            case "&status":
+                String nowPlayingPlayer = "";
+                String maxPlayingPlayer = "";
+                long nowTime;
+                int nowPlayingPlayerCounter = 0;
+
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    nowPlayingPlayerCounter += 1;
+                }
+
+                nowPlayingPlayer = Integer.toString(nowPlayingPlayerCounter);
+                maxPlayingPlayer = Integer.toString(Bukkit.getMaxPlayers());
+                nowTime = Bukkit.getWorld("world").getTime();
+
+                eb.setTitle("서버 상태는 다음과 같습니다.");
+                eb.addField("Now Playing", nowPlayingPlayer + "/" + maxPlayingPlayer, true);
+                eb.addField("Overworld Time", getTimeStr(nowTime), true);
+
+                event.getChannel().sendMessage(eb.build()).queue();
+                break;
+
             case "&help":
                 String description = getHelpMessageListStr();
 
@@ -168,6 +193,7 @@ class Bot extends ListenerAdapter {
 
         String[] desArr = {
                 "`&list` : 현재 접속중인 서버의 플레이어를 조회합니다.",
+                "`&status` : 서버의 현재 상태를 조회합니다.",
                 "`&help` : 도움말을 전송합니다.",
         };
 
@@ -176,5 +202,19 @@ class Bot extends ListenerAdapter {
         }
 
         return description.toString();
+    }
+
+    public String getTimeStr(long time) {
+        String H, M, S;
+        int second;
+
+        time %= 24000;
+        H = Integer.toString(((((int) time + 6000) / 1000)) % 24);
+        time %= 1000;
+        second = (int) Math.round(time / 0.277777);
+        M = Integer.toString(second / 60);
+        S = Integer.toString(second % 60);
+
+        return H + ":" + M + ":" + S;
     }
 }

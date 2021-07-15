@@ -17,25 +17,23 @@ public class GetEmoji {
         }
     }
 
-    public String getFullHeartEmoji() {
+    public String getHeartAndFoodEmoji(int amount, int type) {
         try {
-            return configMap.get("full_heart_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
+            String value = "";
+            String typeStr = type == 0 ? "heart" : "hunger";
+            switch (amount) {
+                case 0:
+                    value = configMap.get("empty_" + typeStr + "_emoji_id").toString();
+                    break;
+                case 1:
+                    value = configMap.get("half_" + typeStr + "_emoji_id").toString();
+                    break;
+                case 2:
+                    value = configMap.get("full_" + typeStr + "_emoji_id").toString();
+                    break;
+            }
 
-    public String getHalfHeartEmoji() {
-        try {
-            return configMap.get("half_heart_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getEmptyHeartEmoji() {
-        try {
-            return configMap.get("empty_heart_emoji_id").toString();
+            return value;
         } catch (NullPointerException e) {
             throw new NullPointerException();
         }
@@ -48,85 +46,4 @@ public class GetEmoji {
             throw new NullPointerException();
         }
     }
-
-    public String getMc0Emoji() {
-        try {
-            return configMap.get("mc_0_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc1Emoji() {
-        try {
-            return configMap.get("mc_1_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc2Emoji() {
-        try {
-            return configMap.get("mc_2_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc3Emoji() {
-        try {
-            return configMap.get("mc_3_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc4Emoji() {
-        try {
-            return configMap.get("mc_4_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc5Emoji() {
-        try {
-            return configMap.get("mc_5_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc6Emoji() {
-        try {
-            return configMap.get("mc_6_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc7Emoji() {
-        try {
-            return configMap.get("mc_7_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc8Emoji() {
-        try {
-            return configMap.get("mc_8_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
-    public String getMc9Emoji() {
-        try {
-            return configMap.get("mc_9_emoji_id").toString();
-        } catch (NullPointerException e) {
-            throw new NullPointerException();
-        }
-    }
-
 }
