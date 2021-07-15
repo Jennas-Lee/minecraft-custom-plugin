@@ -102,7 +102,7 @@ class Bot extends ListenerAdapter {
 
     public void bulidBot() {
         try {
-            JDA jda = JDABuilder.createDefault("ODYyMzEyNTkwMjY3NjQ1OTkz.YOWhLg.eLphheGN4Ljh1hbw7hSlRPVgJNI")
+            JDA jda = JDABuilder.createDefault("DISCORD_TOKEN")
                     .addEventListeners(new Bot())
                     .build();
             jda.awaitReady();
