@@ -69,6 +69,7 @@ public final class CustomPlugin extends JavaPlugin {
 
         Bot bot = new Bot();
         bot.bulidBot();
+        getServer().getPluginManager().registerEvents(new PreventSweetBerries(), this);
     }
 
     @Override
