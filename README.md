@@ -1,8 +1,8 @@
 # minecraft-custom-plugin
 
-![build status](https://travis-ci.org/Jennas-Lee/minecraft-custom-plugin.svg?branch=master)
+![build status](https://travis-ci.com/Jennas-Lee/minecraft-custom-plugin.svg?branch=master)
 ![license](https://img.shields.io/github/license/Jennas-Lee/minecraft-custom-plugin)
-![maven version](https://img.shields.io/badge/maven%20central-1.0.0-blue)
+![maven version](https://img.shields.io/badge/maven%20central-1.0.1-blue)
 
 ## Introduce
 
