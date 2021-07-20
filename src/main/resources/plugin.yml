@@ -1,4 +1,9 @@
 name: CustomPlugin
 version: ${project.version}
-main: com.jennas.minecraft.customplugin.CustomPlugin
+main: io.github.jennas_lee.customplugin.CustomPlugin
 api-version: 1.17
+commands:
+  preventsweetberries:
+    description: Prevent sweet berries in the server.
+    usage: /preventsweetberries
+    aliases: [enable, disable]

@@ -1,4 +1,4 @@
-package com.jennas.minecraft.customplugin;
+package io.github.jennas_lee.customplugin;
 
 public class GetPlayerStatusEmoji {
     GetEmoji emoji = new GetEmoji();

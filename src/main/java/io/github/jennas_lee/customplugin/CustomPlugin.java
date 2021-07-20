@@ -1,4 +1,4 @@
-package com.jennas.minecraft.customplugin;
+package io.github.jennas_lee.customplugin;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -69,7 +69,9 @@ public final class CustomPlugin extends JavaPlugin {
 
         Bot bot = new Bot();
         bot.bulidBot();
-        getServer().getPluginManager().registerEvents(new PreventSweetBerries(), this);
+
+        getServer().getPluginManager().registerEvents(new PreventSweetBerriesEnable(), this);
+        getCommand("preventsweetberries").setExecutor(new PreventSweetBerries());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.jennas.minecraft.customplugin;
+package io.github.jennas_lee.customplugin;
 
 import org.yaml.snakeyaml.Yaml;
 
