@@ -2,7 +2,7 @@
 
 ![build status](https://travis-ci.com/Jennas-Lee/minecraft-custom-plugin.svg?branch=master)
 ![license](https://img.shields.io/github/license/Jennas-Lee/minecraft-custom-plugin)
-![maven version](https://img.shields.io/badge/maven%20central-1.0.1-blue)
+![maven version](https://img.shields.io/badge/maven-2.0.0-blue)
 
 ## Introduce
 
@@ -35,6 +35,8 @@
 
 ![&help](https://user-images.githubusercontent.com/55793046/126307264-f59f9d9a-0745-42f5-a6f5-019eaf13aa6c.png)
 
+> `&advancement 사용자` OR `&ad 사용자` : 사용자의 발전과제 상태를 조회합니다.
+
 
 ### Prevent Using Sweet Berries
 
@@ -53,3 +55,13 @@
 > `/preventsweetberries enable`
 
 달콤한 열매의 차단을 시작합니다. **OP 권한이 필요합니다.** 기본값입니다.
+
+## Update Note
+### 1.0.0
+- 디스코드 명령어 `&list`, `&status`, `&help`가 추가되었습니다.
+
+### 1.0.1
+- 달콤한 열매(Sweet Berries) 차단 기능이 추가되었습니다.
+
+### 2.0.0
+- 디스코드 명령어 `&advancement 사용자`가 추가되었습니다.

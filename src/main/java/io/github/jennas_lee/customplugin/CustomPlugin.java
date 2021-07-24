@@ -6,14 +6,20 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Iterator;
+
+import static org.bukkit.Bukkit.getOfflinePlayers;
 
 public final class CustomPlugin extends JavaPlugin {
 
@@ -105,7 +111,7 @@ class Bot extends ListenerAdapter {
 
     public void bulidBot() {
         try {
-            JDA jda = JDABuilder.createDefault("DISCORD_TOKEN")
+            JDA jda = JDABuilder.createDefault("ODY4NDIzNzA3OTI2ODU5ODI2.YPvcmg.XUiU3abd0E6uwvb7MeMn0nkS3zE")
                     .addEventListeners(new Bot())
                     .build();
             jda.awaitReady();
@@ -121,11 +127,11 @@ class Bot extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        String query = event.getMessage().getContentRaw();
+        String[] query = event.getMessage().getContentRaw().split(" ");
         EmbedBuilder eb = new EmbedBuilder();
         GetPlayerStatusEmoji emoji = new GetPlayerStatusEmoji();
 
-        switch (query) {
+        switch (query[0]) {
             case "&list":
                 try {
 
@@ -178,6 +184,53 @@ class Bot extends ListenerAdapter {
                 event.getChannel().sendMessage(eb.build()).queue();
                 break;
 
+            case "&advancement":
+            case "&ad":
+                eb.setTitle("발전과제 사용 테스트");
+
+                if (query.length == 1) {
+                    eb.setTitle("검색된 사용자가 없습니다.");
+                    eb.setDescription("사용자가 입력되지 않았습니다. 사용자를 입력해주세요.");
+                } else if (query.length > 2) {
+                    eb.setTitle("검색된 사용자가 없습니다.");
+                    eb.setDescription("명령어가 잘못 입력되었습니다. 사용자를 다시 입력해주세요");
+                } else {
+                    Player player = Bukkit.getPlayerExact(query[1]);
+
+                    if (player == null) {
+                        OfflinePlayer offlinePlayer[] = getOfflinePlayers();
+
+                        for (OfflinePlayer offline : offlinePlayer) {
+                            if (offline.getName().equals(query[1])) {
+                                eb.setTitle(query[1] + "님의 발전과제 현황은 다음과 같습니다.");
+                                eb.setDescription(query[1] + "님은 현재 온라인 상태가 아닙니다.");
+                                break;
+                            }
+                        }
+
+                        eb.setTitle("검색된 사용자가 없습니다.");
+                        eb.setDescription(query[1] + "(이)라는 사용자를 찾을 수 없습니다.");
+                    } else {
+                        eb.setTitle(query[1] + "님의 발전과제 현황은 다음과 같습니다.");
+
+                        Iterator<Advancement> iterator = Bukkit.getServer().advancementIterator();
+                        String result = "";
+                        while (iterator.hasNext()) {
+                            Advancement advancement = iterator.next();
+
+                            if (!advancement.getKey().getKey().split("/")[0].equals("recipes") &&
+                                    player.getAdvancementProgress(advancement).isDone()) {
+                                result += advancement.getKey().getKey() + "\n";
+                            }
+                        }
+//                        eb.setDescription(result);
+                        Bukkit.getServer().broadcast(Component.text(result));
+                    }
+                }
+
+                event.getChannel().sendMessage(eb.build()).queue();
+                break;
+
             case "&help":
                 String description = getHelpMessageListStr();
 
@@ -197,6 +250,7 @@ class Bot extends ListenerAdapter {
         String[] desArr = {
                 "`&list` : 현재 접속중인 서버의 플레이어를 조회합니다.",
                 "`&status` : 서버의 현재 상태를 조회합니다.",
+                "`&advancement 사용자` OR `&ad 사용자` : 서버의 현재 상태를 조회합니다.",
                 "`&help` : 도움말을 전송합니다.",
         };
 
@@ -208,16 +262,15 @@ class Bot extends ListenerAdapter {
     }
 
     public String getTimeStr(long time) {
-        String H, M, S;
-        int second;
+        int second, H, M, S;
 
         time %= 24000;
-        H = Integer.toString(((((int) time + 6000) / 1000)) % 24);
+        H = ((((int) time + 6000) / 1000)) % 24;
         time %= 1000;
         second = (int) Math.round(time / 0.277777);
-        M = Integer.toString(second / 60);
-        S = Integer.toString(second % 60);
+        M = second / 60;
+        S = second % 60;
 
-        return H + ":" + M + ":" + S;
+        return String.format("%02d:%02d:%02d", H, M, S);
     }
 }
